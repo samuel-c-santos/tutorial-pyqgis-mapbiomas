@@ -621,21 +621,27 @@
 
             <section>
                 <h2>Introdução</h2>
-                <p>Quem já trabalhou com dados do <strong>MapBiomas</strong> sabe o quão trabalhoso pode ser configurar
-                    a simbologia para múltiplas camadas de análise temporal. Repetir esse processo manualmente para cada
-                    ano é tedioso, propenso a erros e consome um tempo precioso que poderia ser dedicado à análise.</p>
+                <p>A consistência visual é um requisito fundamental ao trabalhar com a série histórica do MapBiomas.
+                    Quando analisamos mudanças ao longo de décadas, qualquer discrepância na simbologia entre os anos
+                    pode levar a interpretações erradas ou, no mínimo, comprometer a qualidade final do produto
+                    cartográfico.</p>
 
-                <p>Pensando nisso, desenvolvi uma metodologia automatizada usando <strong>PyQGIS</strong> que permite
-                    aplicar a legenda oficial do MapBiomas em todas as camadas vetoriais de uma só vez. Neste tutorial,
-                    vou compartilhar cada etapa do processo que utilizei em projetos reais de mapeamento.</p>
+                <p>No entanto, configurar manualmente a legenda para dezenas de camadas vetoriais é uma tarefa
+                    ineficiente
+                    e sujeita a erros operacionais. Para resolver isso, estruturei uma rotina em PyQGIS que automatiza o
+                    processo. O método apresentado aqui garante que a taxonomia oficial seja aplicada uniformemente em
+                    toda
+                    a série, assegurando a integridade visual dos dados de 1985 até o presente.</p>
 
                 <div class="info-card">
-                    <h4>O que você vai aprender</h4>
+                    <h4>Resumo do Fluxo</h4>
+                    <p>O processo foi desenhado para garantir a integridade dos dados ao transitar do matricial para o
+                        vetorial:</p>
                     <ul>
-                        <li>Converter raster MapBiomas para formato vetorial</li>
-                        <li>Limpar feições de borda indesejadas</li>
-                        <li>Fazer join com a legenda oficial</li>
-                        <li>Automatizar a aplicação de simbologia com PyQGIS</li>
+                        <li>Conversão em lote de Raster para Vetor preservando o Code ID;</li>
+                        <li>Limpeza de geometria para remoção de ruídos de processamento;</li>
+                        <li>Enriquecimento tabular (Join) com a estrutura oficial de classes;</li>
+                        <li>Aplicação dinâmica de estilo categorizado via script Python.</li>
                     </ul>
                 </div>
             </section>
@@ -665,6 +671,12 @@
                     <h3>Poligonizar o Raster</h3>
                     <p>O primeiro passo é converter o raster MapBiomas para formato vetorial. Isso permite que façamos
                         relações (joins) com tabelas externas e apliquemos simbologia categorizada.</p>
+
+                    <p>Embora o formato raster seja ideal para álgebra de mapas, a vetorização torna-se necessária para
+                        operações de superposição complexas, como o cruzamento com o CAR (Cadastro Ambiental Rural) ou
+                        recortes por limites administrativos. O ponto crítico nesta etapa é garantir que a conversão
+                        mantenha o <strong>Code ID</strong> original do pixel na tabela de atributos da nova geometria.
+                    </p>
 
                     <p><strong>No QGIS:</strong></p>
                     <ol>
@@ -830,15 +842,12 @@
                     <img src="img/11.abrir-script.png" alt="Abrindo o script">
 
                     <div class="info-card">
-                        <h4>Entendendo o Script</h4>
-                        <p>O script faz três coisas principais:</p>
-                        <ol>
-                            <li>Lê os valores únicos dos campos <span class="file-ref">COLEÇÃO 10 - CLASSES</span> e
-                                <span class="file-ref">Hexacode Number</span>
-                            </li>
-                            <li>Cria categorias de simbologia baseadas nessas informações</li>
-                            <li>Aplica o renderer categorizado em todas as camadas listadas</li>
-                        </ol>
+                        <h4>Lógica de Execução</h4>
+                        <p>Em vez de carregar um arquivo de estilo estático (.qml), o script itera sobre as camadas
+                            ativas e constrói o renderizador categorizado em tempo real. Ele lê os atributos de classe e
+                            cor (hex) consolidados pelo Join e aplica a simbologia apenas para as categorias
+                            efetivamente
+                            presentes na geometria. Isso resulta em uma legenda limpa e precisa, sem classes vazias.</p>
                     </div>
 
                     <p><strong>Configurar as Camadas:</strong></p>
@@ -951,12 +960,12 @@ Processo de Simbologia Concluído.</code>
 
             <section>
                 <h2>Conclusão</h2>
-                <p>A automação de tarefas repetitivas é essencial para profissionais de geoprocessamento que trabalham
-                    com análises temporais extensas. Este tutorial demonstrou como o PyQGIS pode transformar horas de
-                    trabalho manual em segundos de processamento automatizado.</p>
+                <p>A integração do Python ao fluxo de trabalho do QGIS é o que permite escalar processos de
+                    geoprocessamento com segurança. A rotina demonstrada aqui resolve especificamente a padronização do
+                    MapBiomas, mas a lógica é facilmente adaptável para outras bases de dados categóricas, como mapas de
+                    uso do solo do IBGE ou classificações próprias.</p>
 
-                <p>Espero que esta metodologia seja útil em seus projetos. Se tiver dúvidas ou sugestões, sinta-se à
-                    vontade para entrar em contato.</p>
+                <p>O código está disponível para uso e adaptação conforme as demandas do seu projeto.</p>
             </section>
         </article>
     </div>
