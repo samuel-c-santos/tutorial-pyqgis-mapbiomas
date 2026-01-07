@@ -1,7 +1,5 @@
 # Automatização de Simbologia MapBiomas com PyQGIS
 
-[![Tutorial Completo](https://img.shields.io/badge/Tutorial-Acesse%20Aqui-2563eb?style=for-the-badge)](https://samuel-c-santos.github.io/tutorial-pyqgis-mapbiomas/)
-
 > Script Python para aplicação automatizada de simbologia oficial do MapBiomas (Coleção 10) em múltiplas camadas vetoriais usando PyQGIS.
 
 [![Tutorial Preview](img/mockup.png)](https://samuel-c-santos.github.io/tutorial-pyqgis-mapbiomas/)
