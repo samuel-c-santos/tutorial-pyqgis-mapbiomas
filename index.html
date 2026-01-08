@@ -525,6 +525,26 @@
             }
         }
 
+<<<<<<< HEAD
+=======
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+>>>>>>> fc8cf6146d8988ce532e5dd0974ab730d23afa7e
         /* Link Styles */
         a:not(.logo):not(.nav-icon):not(.btn-contact):not(.download-btn):not(.contact-item a) {
             color: var(--primary-blue);
@@ -604,6 +624,7 @@
 
             <section>
                 <h2>Introdução</h2>
+<<<<<<< HEAD
                 <p>Quem já trabalhou com dados do <strong>MapBiomas</strong> sabe o quão trabalhoso pode ser configurar
                     a simbologia para múltiplas camadas de análise temporal. Repetir esse processo manualmente para cada
                     ano é tedioso, propenso a erros e consome um tempo precioso que poderia ser dedicado à análise.</p>
@@ -619,6 +640,29 @@
                         <li>Limpar feições de borda indesejadas</li>
                         <li>Fazer join com a legenda oficial</li>
                         <li>Automatizar a aplicação de simbologia com PyQGIS</li>
+=======
+                <p>A consistência visual é um requisito fundamental ao trabalhar com a série histórica do MapBiomas.
+                    Quando analisamos mudanças ao longo de décadas, qualquer discrepância na simbologia entre os anos
+                    pode levar a interpretações erradas ou, no mínimo, comprometer a qualidade final do produto
+                    cartográfico.</p>
+
+                <p>No entanto, configurar manualmente a legenda para dezenas de camadas vetoriais é uma tarefa
+                    ineficiente
+                    e sujeita a erros operacionais. Para resolver isso, estruturei uma rotina em PyQGIS que automatiza o
+                    processo. O método apresentado aqui garante que a taxonomia oficial seja aplicada uniformemente em
+                    toda
+                    a série, assegurando a integridade visual dos dados de 1985 até o presente.</p>
+
+                <div class="info-card">
+                    <h4>Resumo do Fluxo</h4>
+                    <p>O processo foi desenhado para garantir a integridade dos dados ao transitar do matricial para o
+                        vetorial:</p>
+                    <ul>
+                        <li>Conversão em lote de Raster para Vetor preservando o Code ID;</li>
+                        <li>Limpeza de geometria para remoção de ruídos de processamento;</li>
+                        <li>Enriquecimento tabular (Join) com a estrutura oficial de classes;</li>
+                        <li>Aplicação dinâmica de estilo categorizado via script Python.</li>
+>>>>>>> fc8cf6146d8988ce532e5dd0974ab730d23afa7e
                     </ul>
                 </div>
             </section>
@@ -649,6 +693,15 @@
                     <p>O primeiro passo é converter o raster MapBiomas para formato vetorial. Isso permite que façamos
                         relações (joins) com tabelas externas e apliquemos simbologia categorizada.</p>
 
+<<<<<<< HEAD
+=======
+                    <p>Embora o formato raster seja ideal para álgebra de mapas, a vetorização torna-se necessária para
+                        operações de superposição complexas, como o cruzamento com o CAR (Cadastro Ambiental Rural) ou
+                        recortes por limites administrativos. O ponto crítico nesta etapa é garantir que a conversão
+                        mantenha o <strong>Code ID</strong> original do pixel na tabela de atributos da nova geometria.
+                    </p>
+
+>>>>>>> fc8cf6146d8988ce532e5dd0974ab730d23afa7e
                     <p><strong>No QGIS:</strong></p>
                     <ol>
                         <li>Carregue seu raster MapBiomas (<span
@@ -813,6 +866,7 @@
                     <img src="img/11.abrir-script.png" alt="Abrindo o script">
 
                     <div class="info-card">
+<<<<<<< HEAD
                         <h4>Entendendo o Script</h4>
                         <p>O script faz três coisas principais:</p>
                         <ol>
@@ -822,6 +876,14 @@
                             <li>Cria categorias de simbologia baseadas nessas informações</li>
                             <li>Aplica o renderer categorizado em todas as camadas listadas</li>
                         </ol>
+=======
+                        <h4>Lógica de Execução</h4>
+                        <p>Em vez de carregar um arquivo de estilo estático (.qml), o script itera sobre as camadas
+                            ativas e constrói o renderizador categorizado em tempo real. Ele lê os atributos de classe e
+                            cor (hex) consolidados pelo Join e aplica a simbologia apenas para as categorias
+                            efetivamente
+                            presentes na geometria. Isso resulta em uma legenda limpa e precisa, sem classes vazias.</p>
+>>>>>>> fc8cf6146d8988ce532e5dd0974ab730d23afa7e
                     </div>
 
                     <p><strong>Configurar as Camadas:</strong></p>
@@ -883,6 +945,43 @@ Processo de Simbologia Concluído.</code>
                 </ul>
             </section>
 
+<<<<<<< HEAD
+=======
+            <section>
+                <h2>Possíveis Problemas e Soluções</h2>
+
+                <h3>Erro: Campos não encontrados</h3>
+                <p><strong>Causa:</strong> Os nomes dos campos no script não correspondem aos nomes reais após o join.
+                </p>
+                <p><strong>Solução:</strong> Verifique os nomes exatos abrindo a tabela de atributos. Se você configurou
+                    o join sem prefixo, use <span class="file-ref">COLEÇÃO 10 - CLASSES</span> e <span
+                        class="file-ref">Hexacode Number</span>. Ajuste as variáveis <span
+                        class="file-ref">CLASSIFICATION_FIELD</span> e <span class="file-ref">HEXACODE_FIELD</span> no
+                    script conforme necessário.</p>
+
+                <h3>Cores não aparecem</h3>
+                <p><strong>Causa:</strong> Códigos hexadecimais podem estar sem o símbolo #.</p>
+                <p><strong>Solução:</strong> O script já trata isso automaticamente (linhas 47-48), mas verifique se o
+                    CSV está correto.</p>
+
+                <h3>Script não encontra camadas</h3>
+                <p><strong>Causa:</strong> Nomes das camadas no script não correspondem aos nomes no projeto.</p>
+                <p><strong>Solução:</strong> Copie os nomes exatos do painel de camadas do QGIS (sem a extensão .shp).
+                </p>
+            </section>
+
+            <section>
+                <h2>Próximos Passos</h2>
+                <p>Agora que você domina essa técnica, pode explorar variações como:</p>
+                <ul>
+                    <li>Criar layouts de mapa automatizados com o QGIS Atlas</li>
+                    <li>Exportar estatísticas de área por classe de uso</li>
+                    <li>Gerar mapas de mudança de uso do solo ao longo dos anos</li>
+                    <li>Integrar com outras bases de dados geográficas</li>
+                </ul>
+            </section>
+
+>>>>>>> fc8cf6146d8988ce532e5dd0974ab730d23afa7e
             <!-- Download Section -->
             <div class="download-section">
                 <h3>Baixe os Arquivos do Tutorial</h3>
@@ -900,12 +999,21 @@ Processo de Simbologia Concluído.</code>
 
             <section>
                 <h2>Conclusão</h2>
+<<<<<<< HEAD
                 <p>A automação de tarefas repetitivas é essencial para profissionais de geoprocessamento que trabalham
                     com análises temporais extensas. Este tutorial demonstrou como o PyQGIS pode transformar horas de
                     trabalho manual em segundos de processamento automatizado.</p>
 
                 <p>Espero que esta metodologia seja útil em seus projetos. Se tiver dúvidas ou sugestões, sinta-se à
                     vontade para entrar em contato.</p>
+=======
+                <p>A integração do Python ao fluxo de trabalho do QGIS é o que permite escalar processos de
+                    geoprocessamento com segurança. A rotina demonstrada aqui resolve especificamente a padronização do
+                    MapBiomas, mas a lógica é facilmente adaptável para outras bases de dados categóricas, como mapas de
+                    uso do solo do IBGE ou classificações próprias.</p>
+
+                <p>O código está disponível para uso e adaptação conforme as demandas do seu projeto.</p>
+>>>>>>> fc8cf6146d8988ce532e5dd0974ab730d23afa7e
             </section>
         </article>
     </div>
@@ -977,8 +1085,33 @@ Processo de Simbologia Concluído.</code>
             }
         });
 
+<<<<<<< HEAD
         // Scroll effect for header only
     </script>
 </body>
 
 </html>
+=======
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all step cards
+        document.querySelectorAll('.step-card').forEach((card) => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+
+</html>
+>>>>>>> fc8cf6146d8988ce532e5dd0974ab730d23afa7e
